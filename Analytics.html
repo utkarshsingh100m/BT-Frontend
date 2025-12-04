@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - Buddy Tools</title>
+    <link href="assets/css/tooplate-minimal-white-style.css" rel="stylesheet">
+    <style>
+        /* Analytics Page Specific Styles */
+        .analytics-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            padding: 40px 20px;
+        }
+
+        .analytics-content {
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .analytics-header {
+            margin-bottom: 60px;
+        }
+
+        .analytics-header h1 {
+            font-size: 48px;
+            font-weight: 100;
+            letter-spacing: -2px;
+            margin-bottom: 15px;
+        }
+
+        .analytics-header p {
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #666;
+        }
+
+        .visit-counter {
+            background: #fff;
+            border: 2px solid #000;
+            padding: 80px 40px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .visit-counter::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: 20px;
+            height: 20px;
+            border-top: 2px solid #000;
+            border-left: 2px solid #000;
+        }
+
+        .visit-counter::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: -10px;
+            width: 20px;
+            height: 20px;
+            border-bottom: 2px solid #000;
+            border-right: 2px solid #000;
+        }
+
+        .visit-counter:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .counter-label {
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 500;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .counter-value {
+            font-size: 120px;
+            font-weight: 100;
+            letter-spacing: -5px;
+            line-height: 1;
+            color: #000;
+            margin-bottom: 20px;
+            transition: all 0.5s ease;
+        }
+
+        .counter-subtitle {
+            font-size: 14px;
+            color: #999;
+            font-weight: 300;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 15px 40px;
+            border: 2px solid #000;
+            color: #000;
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: #000;
+            color: #fff;
+            transform: translateY(-3px);
+        }
+
+        .loading {
+            opacity: 0.5;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .analytics-header h1 {
+                font-size: 36px;
+            }
+
+            .counter-value {
+                font-size: 80px;
+            }
+
+            .visit-counter {
+                padding: 60px 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Buddy Tools</a>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html" class="nav-link">HOME</a></li>
+                <li><a href="About.html" class="nav-link">ABOUT</a></li>
+                <li><a href="ChatGPT.html" class="nav-link">ChatGPT</a></li>
+                <li><a href="Tools.html" class="nav-link">Tools</a></li>
+                <li><a href="Analytics.html" class="nav-link active">Analytics</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Analytics Page Content -->
+    <section class="analytics-page">
+        <div class="analytics-content">
+            <div class="analytics-header">
+                <h1>Site Analytics</h1>
+                <p>Real-time visitor tracking</p>
+            </div>
+
+            <div class="visit-counter loading" id="visitCounter">
+                <div class="counter-label">Total Site Visits</div>
+                <div class="counter-value" id="totalVisits">0</div>
+                <div class="counter-subtitle">All-time page views</div>
+            </div>
+
+            <a href="index.html" class="back-link">← Back to Home</a>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="assets/js/tooplate-minimal-script.js"></script>
+    <script>
+        // API Configuration
+        const API_BASE_URL = 'https://bt-backend-eight.vercel.app';
+        const ANALYTICS_URL = `${API_BASE_URL}/api/analytics`;
+
+        // Animate counter with smooth counting effect
+        function animateCounter(element, targetValue) {
+            const duration = 2000; // 2 seconds
+            const startValue = 0;
+            const startTime = performance.now();
+
+            function updateCounter(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+
+                // Easing function for smooth animation
+                const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                const currentValue = Math.floor(startValue + (targetValue - startValue) * easeOutQuart);
+
+                element.textContent = currentValue.toLocaleString();
+
+                if (progress < 1) {
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    element.textContent = targetValue.toLocaleString();
+                }
+            }
+
+            requestAnimationFrame(updateCounter);
+        }
+
+        // Fetch and display analytics
+        async function loadAnalytics() {
+            const counterElement = document.getElementById('totalVisits');
+            const containerElement = document.getElementById('visitCounter');
+
+            try {
+                const response = await fetch(`${ANALYTICS_URL}?days=365`); // Get all-time stats
+                const result = await response.json();
+
+                if (result.success) {
+                    const totalVisits = result.data.total_visits || 0;
+                    
+                    // Remove loading state
+                    containerElement.classList.remove('loading');
+                    
+                    // Animate the counter
+                    animateCounter(counterElement, totalVisits);
+                    
+                    console.log('✓ Analytics loaded successfully');
+                } else {
+                    console.error('✗ Failed to load analytics:', result.error);
+                    counterElement.textContent = '--';
+                    containerElement.classList.remove('loading');
+                }
+            } catch (error) {
+                console.error('✗ Error loading analytics:', error);
+                counterElement.textContent = '--';
+                containerElement.classList.remove('loading');
+            }
+        }
+
+        // Track this page visit
+        async function trackPageVisit() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/track-visit`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        page_path: window.location.pathname
+                    })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    console.log('✓ Visit tracked successfully');
+                }
+            } catch (error) {
+                console.error('✗ Error tracking visit:', error);
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            trackPageVisit();
+            loadAnalytics();
+            
+            // Optional: Refresh every 30 seconds
+            // setInterval(loadAnalytics, 30000);
+        });
+    </script>
+</body>
+
+</html>
