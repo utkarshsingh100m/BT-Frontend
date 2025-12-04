@@ -61,7 +61,7 @@ async function sendMessage() {
     }
 }
 
-// Handle standard JSON response from backend
+// Handle streaming response from backend
 async function handleStandardResponse(userMessage, messages) {
     const response = await fetch(CHAT_API_URL, {
         method: 'POST',
@@ -75,14 +75,7 @@ async function handleStandardResponse(userMessage, messages) {
     });
 
     if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    
-    if (!data.success) {
-        throw new Error(data.error || 'Unknown error occurred');
+        throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     removeTypingIndicator();
@@ -90,14 +83,57 @@ async function handleStandardResponse(userMessage, messages) {
     // Create bot message div
     const botDiv = document.createElement('div');
     botDiv.className = 'message bot-message';
-    botDiv.innerHTML = `<strong>GPT:</strong> <span class="response-content">${escapeHtml(data.message)}</span>`;
+    botDiv.innerHTML = `<strong>GPT:</strong> <span class="response-content"></span>`;
     messages.appendChild(botDiv);
-    messages.scrollTop = messages.scrollHeight;
+    const responseContent = botDiv.querySelector('.response-content');
+
+    let fullMessage = '';
+    
+    // Read the streaming response
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+
+    try {
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            const chunk = decoder.decode(value);
+            const lines = chunk.split('\n');
+
+            for (const line of lines) {
+                if (line.startsWith('data: ')) {
+                    try {
+                        const data = JSON.parse(line.slice(6));
+                        
+                        if (data.error) {
+                            throw new Error(data.error);
+                        }
+                        
+                        if (data.content) {
+                            fullMessage += data.content;
+                            responseContent.textContent = fullMessage;
+                            messages.scrollTop = messages.scrollHeight;
+                        }
+                        
+                        if (data.done) {
+                            break;
+                        }
+                    } catch (e) {
+                        // Skip invalid JSON lines
+                        console.warn('Failed to parse line:', line, e);
+                    }
+                }
+            }
+        }
+    } finally {
+        reader.releaseLock();
+    }
 
     // Add to conversation history
     conversationHistory.push({
         role: 'assistant',
-        content: data.message
+        content: fullMessage
     });
 }
 
