@@ -3,7 +3,11 @@
 // ===================================
 
 // Configuration
+<<<<<<< HEAD
 const CHAT_API_URL = 'https://bt-backend-eight.vercel.app/api/chat'; // Backend server
+=======
+const CHAT_API_URL = 'https://bt-backend-eight.vercel.app/'; // Backend server
+>>>>>>> f799ec1692a55b4335c1fadfd9894424114eb486
 
 // Conversation history
 let conversationHistory = [];
