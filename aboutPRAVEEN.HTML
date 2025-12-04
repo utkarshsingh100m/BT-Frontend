@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Praveen Mishra - Buddy Tools</title>
+    <link href="assets/css/tooplate-minimal-white-style.css" rel="stylesheet">
+    <style>
+        .profile-section {
+            padding: 120px 20px 80px;
+            min-height: 100vh;
+        }
+
+        .profile-hero {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .profile-hero h1 {
+            font-size: 64px;
+            font-weight: 100;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .profile-hero h1::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: #000;
+        }
+
+        .profile-hero p {
+            font-size: 16px;
+            color: #666;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 30px;
+        }
+
+        .profile-image {
+            max-width: 300px;
+            margin: 0 auto 60px;
+            position: relative;
+        }
+
+        .profile-image img {
+            width: 100%;
+            border: 3px solid #000;
+            display: block;
+        }
+
+        .profile-image::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            width: 40px;
+            height: 40px;
+            border-top: 3px solid #000;
+            border-left: 3px solid #000;
+        }
+
+        .profile-image::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            right: -15px;
+            width: 40px;
+            height: 40px;
+            border-bottom: 3px solid #000;
+            border-right: 3px solid #000;
+        }
+
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .social-item {
+            display: flex;
+            align-items: center;
+            padding: 30px;
+            border: 2px solid #000;
+            background: #fff;
+            transition: all 0.3s ease;
+            position: relative;
+            text-decoration: none;
+            color: #000;
+        }
+
+        .social-item::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 20px;
+            height: 20px;
+            background: #000;
+            transition: all 0.3s ease;
+        }
+
+        .social-item:hover {
+            transform: translate(-5px, -5px);
+            box-shadow: 8px 8px 0 #000;
+        }
+
+        .social-item:hover::before {
+            transform: scale(1.2);
+        }
+
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            margin-right: 25px;
+            flex-shrink: 0;
+        }
+
+        .social-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .social-content h3 {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
+        }
+
+        .social-content p {
+            font-size: 14px;
+            color: #666;
+            margin: 0;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: #000;
+            color: #fff;
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            border: 2px solid #000;
+        }
+
+        .back-button:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        @media (max-width: 768px) {
+            .profile-hero h1 {
+                font-size: 42px;
+            }
+
+            .social-item {
+                padding: 20px;
+            }
+
+            .social-icon {
+                width: 40px;
+                height: 40px;
+                margin-right: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Buddy Tools</a>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html" class="nav-link">HOME</a></li>
+                <li><a href="About.html" class="nav-link">ABOUT</a></li>
+                <li><a href="ChatGPT.html" class="nav-link">ChatGPT</a></li>
+                <li><a href="Tools.html" class="nav-link">Tools</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="profile-section">
+        <div class="container">
+            <div class="profile-hero fade-in">
+                <h1>Praveen Mishra</h1>
+                <p>Frontend Developer</p>
+            </div>
+
+            <div class="profile-image fade-in">
+                <img src="assets/images/profile-pic praveen.png" alt="Praveen Mishra">
+            </div>
+
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/praveen-mishra-226980374/" class="social-item fade-in"
+                    target="_blank" rel="noopener noreferrer">
+                    <div class="social-icon">
+                        <img src="assets/images/Linkedin.jpg" alt="LinkedIn">
+                    </div>
+                    <div class="social-content">
+                        <h3>LinkedIn</h3>
+                        <p>Connect professionally</p>
+                    </div>
+                </a>
+
+                <a href="https://www.instagram.com/praveen.mp3?igsh=aDB5eWx6am54N3pw" class="social-item fade-in"
+                    target="_blank" rel="noopener noreferrer">
+                    <div class="social-icon">
+                        <img src="assets/images/instagram.jpg" alt="Instagram">
+                    </div>
+                    <div class="social-content">
+                        <h3>Instagram</h3>
+                        <p>Follow my journey</p>
+                    </div>
+                </a>
+
+                <a href="https://github.com/praveenmis771800-glitch" class="social-item fade-in" target="_blank"
+                    rel="noopener noreferrer">
+                    <div class="social-icon">
+                        <img src="assets/images/GitHub.jpg" alt="GitHub">
+                    </div>
+                    <div class="social-content">
+                        <h3>GitHub</h3>
+                        <p>Check out my projects</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="back-link fade-in">
+                <a href="About.html" class="back-button">Back to Team</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 Buddy Tools — Designed by <b>Team GenerateZ</b></p>
+    </footer>
+
+    <script src="assets/js/tooplate-minimal-script.js"></script>
+</body>
+
+</html>
