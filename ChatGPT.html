@@ -50,6 +50,8 @@
             width: 30px;
             height: 30px;
             background: #000;
+            background-image: radial-gradient(#333 1px, transparent 1px);
+            background-size: 4px 4px;
         }
 
         #chat-messages {
@@ -188,6 +190,19 @@
             background: #d32f2f;
         }
     </style>
+    <!-- MathJax for rendering equations -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 
 <body>

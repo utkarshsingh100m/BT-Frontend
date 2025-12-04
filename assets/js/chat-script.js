@@ -135,6 +135,11 @@ async function handleStandardResponse(userMessage, messages) {
         role: 'assistant',
         content: fullMessage
     });
+
+    // Render MathJax
+    if (window.MathJax) {
+        window.MathJax.typesetPromise([responseContent]).catch((err) => console.log('MathJax error:', err));
+    }
 }
 
 // Remove typing indicator
